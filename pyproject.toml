@@ -24,7 +24,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.7, <3.11"
-onecode = ">=1.0.0"
+onecode = { git = "https://github.com/deeplime-io/onecode.git", branch = "dev/1.x" }
 pydash = "^5.1.0"
 python-slugify = "^6.1.2"
 
