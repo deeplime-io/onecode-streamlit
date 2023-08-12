@@ -460,7 +460,7 @@ def main() -> None:   # pragma: no cover
     # if data root not set, set it to data folder in current working directory
     if Env.ONECODE_PROJECT_DATA not in os.environ:
         os.environ[Env.ONECODE_PROJECT_DATA] = os.path.join(os.getcwd(), 'data')
-        Project().reset()
+        Project().reset(keep_registered_elements=True)
 
     # optionally load required modules dynamically,
     # typically modules extending OneCode
