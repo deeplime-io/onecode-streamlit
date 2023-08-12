@@ -1,0 +1,172 @@
+# SPDX-FileCopyrightText: 2023 DeepLime <contact@deeplime.io>
+# SPDX-License-Identifier: MIT
+
+import inspect
+from abc import abstractmethod
+from typing import List
+
+import pydash
+
+from ..utils.format import indent_block
+
+
+class OutputStreamlitElement():
+    """
+    `OutputElement` mixin for Streamlit mode. By inheriting it, it is mandatory to define:
+    - [`streamlit()`][onecode_st.OutputStreamlitElement.streamlit]: method returning the Streamlit
+        code to be generated.
+
+    `imports()` and `init()` may be reimplemented if required by the element.
+
+    Attributes:
+        label: Human readable name typically used for display.
+    """
+
+    @property
+    def label(self) -> str:
+        """
+        Get the label with triple-quotes and escaped to handle human-readable string.
+        It is primarly meant to be used as-is in the Streamlit generated code for the
+        `label` parameter.
+        See [`streamlit()`][onecode.OutputElement.streamlit] for more information.
+
+        Returns:
+            The string to be used in `streamlit()` for the `label` parameter.
+
+        !!! example
+            ```py
+            from onecode import Mode, Project, text_output
+
+            Project().mode = Mode.CONSOLE
+            x = text_output("Hello l'aspirateur!", None)
+
+            assert x.label == "'''Hello l\\'aspirateur!'''"
+            ```
+
+        """
+        name = self._label.replace("'", "\\'")
+        return f"'''{name}'''"
+
+    @staticmethod
+    def imports() -> List[str]:
+        """
+        Re-implement this function in case your Streamlit code requires specific Python package
+        import. This function should return a list of import statement as string.
+
+        Note that the following packages are already imported (not needed to return them in that
+        list): `os`, `json`, `uuid`, `pydash`, `streamlit as st`.
+
+        !!! example
+            ```py
+            @staticmethod
+            def imports() -> List[str]:
+                return [
+                    "import numpy as np",
+                    "import plotly"
+                ]
+            ```
+
+        """
+        return []
+
+    @staticmethod
+    def init() -> str:
+        """
+        Re-implement this function in case your Streamlit code requires specific initialization
+        statements. Note that all variables starting with a `_` are reserved.
+
+        !!! example
+            ```py
+            @staticmethod
+            def init() -> str:
+                return '''
+                    def x(angle):
+                        return np.deg2rad(angle%360)
+                '''
+            ```
+
+        """
+        return ''
+
+    @staticmethod
+    @abstractmethod
+    def streamlit() -> str:   # pragma: no cover
+        """
+        You must re-implement this function to return the expected Streamlit block code for
+        this element. This block code will be written out to the generated Streamlit App code.
+
+        You should write this block code as the body of a static function yielding all internal
+        attributes (such as `key`, `label`, `value` and `kind`) and any other custom attributes
+        provided in this `OutputElement` initialization function's signature.
+        For instance:
+        ```py
+        class MyOutputElement(OutputElement):
+            def __init__(
+                self,
+                key: str,
+                value: Any,
+                label: Optional[str],
+                my_extra_1: int,
+                my_extra_2: str
+            ):
+                # ...
+        ```
+        will generated the following static function signature
+        ```py
+        function _MyOutputElement(key, label, value, kind, my_extra_1, my_extra_2)
+        ```
+
+        Returns:
+            The Streamlit block code to be output in the generated Streamlit App code.
+
+        !!! example
+            ```py
+                def streamlit() -> str:
+                    return '''
+            st.write(f'{key} - {label} - {value} - {kind}: {my_extra_1} | {my_extra_2}')
+            '''
+            ```
+
+            will write out to the Streamlit App file:
+            ```py
+            # static function called when the corresponding file is selected in the tree
+            function _MyOutputElement(key, label, value, kind, my_extra_1, my_extra_2)
+                st.write(f'{key} - {label} - {value} - {kind}: {my_extra_1} | {my_extra_2}')
+            ```
+
+        """
+        pass
+
+    @classmethod
+    def _build_streamlit(cls) -> str:
+        """
+        Function called when Project mode is Streamlit mode. This will generate the output static
+        function called when the corresponding output file is selected in the Streamlit App file
+        tree. The function signature is made of the internal attributes and any other custom
+        attributes.
+
+        !!! note
+            See [`streamlit()`][onecode.OutputElement.streamlit] for more information.
+
+        Returns:
+            The block code generated by this `OutputElement` to be written out to the generated
+            Streamlit app code.
+
+        """
+        # Get the _extra_args names to allow them in the function definition to be returned
+        # Remove **kwargs from the signature
+        extra_args = [*inspect.signature(cls).parameters]
+        if extra_args[-1] == "kwargs":
+            del extra_args[-1]
+
+        params = pydash.uniq(
+            ['key', 'label', 'value', 'kind'] + extra_args
+        )
+
+        code_gen = f"""
+def _{cls.__name__}({'=None, '.join(params)}=None, **kwargs):
+"""
+        code_gen += indent_block(cls.streamlit())
+        code_gen += "\n"
+
+        return code_gen
