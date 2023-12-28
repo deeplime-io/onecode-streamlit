@@ -1,10 +1,11 @@
 # SPDX-FileCopyrightText: 2023 DeepLime <contact@deeplime.io>
 # SPDX-License-Identifier: MIT
 
-from enum import Enum
+# strenum to allow for code backward-compat between Python 3.10 and Python 3.11+
+from strenum import StrEnum
 
 
-class Keyword(str, Enum):
+class Keyword(StrEnum):
     """
     Reserved keywords for the Streamlit app.
 

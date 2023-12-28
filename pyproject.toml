@@ -23,10 +23,11 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7, <3.11"
+python = ">=3.8, <3.13"
 onecode = { git = "https://github.com/deeplime-io/onecode.git", branch = "dev/1.x" }
-pydash = "^5.1.0"
-python-slugify = "^6.1.2"
+pydash = ">=5.1.0,<8"
+python-slugify = ">=6.1.2,<9"
+strenum = ">=0.4.6,<1"
 
 # streamlit
 streamlit = { version = ">=1.12.0,<1.18", optional = true }
@@ -36,10 +37,10 @@ streamlit_tree_select = { version = "^0.0.5", optional = true }
 altair = { version = "<5", optional = true }
 
 # tests
-datatest = { version = "^0.11.1", optional = true }
-pytest = { version = "^6.0.2", optional = true }
-pytest-cov = { version = "^2.10.1", optional = true }
-pytest-xdist = { version = "^3.1.0", optional = true }
+datatest = { version = ">=0.11.1,<1", optional = true }
+pytest = { version = ">=6.2.0,<8", optional = true }
+pytest-cov = { version = ">=2.10.1,<5", optional = true }
+pytest-xdist = { version = ">=3.1.0,<4", optional = true }
 
 [tool.poetry.extras]
 test = [
