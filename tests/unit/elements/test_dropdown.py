@@ -35,7 +35,7 @@ def test_extract_all_dropdown():
         "key": "dropdown",
         "kind": "Dropdown",
         "value": [["A", "B"], ["C"]],
-        "label": "My Dropdown",
+        "label": "'''My Dropdown'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2",

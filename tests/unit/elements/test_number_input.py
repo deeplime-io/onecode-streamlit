@@ -40,7 +40,7 @@ def test_extract_all_number_input():
         "min": 0.1,
         "max": 15.6,
         "step": 0.1,
-        "label": "My NumberInput",
+        "label": "'''My NumberInput'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2"

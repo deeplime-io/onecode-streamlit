@@ -39,7 +39,7 @@ def test_extract_all_slider():
         "min": 0.1,
         "max": 15.6,
         "step": 0.1,
-        "label": "My Slider",
+        "label": "'''My Slider'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2"

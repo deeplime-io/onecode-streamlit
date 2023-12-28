@@ -61,7 +61,7 @@ def test_extract_all_file_input():
         "key": "fileinput",
         "kind": "FileInput",
         "value": ["/path/to/file.jpg"],
-        "label": "My FileInput",
+        "label": "'''My FileInput'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2",

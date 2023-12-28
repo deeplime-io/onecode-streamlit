@@ -32,7 +32,7 @@ def test_extract_all_checkbox():
         "key": "checkbox",
         "kind": "Checkbox",
         "value": [True, True],
-        "label": "My Checkbox",
+        "label": "'''My Checkbox'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2"

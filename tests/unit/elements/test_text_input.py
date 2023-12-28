@@ -34,7 +34,7 @@ def test_extract_all_text_input():
         "key": "textinput",
         "kind": "TextInput",
         "value": ["OneCode", "rocks!"],
-        "label": "My TextInput",
+        "label": "'''My TextInput'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2",

@@ -54,7 +54,7 @@ def test_extract_all_folder_input():
         "key": "folderinput",
         "kind": "FolderInput",
         "value": ["/path/to"],
-        "label": "My FolderInput",
+        "label": "'''My FolderInput'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2"

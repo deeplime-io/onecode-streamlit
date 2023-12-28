@@ -313,7 +313,7 @@ def _show_img(path: str) -> None:
 
 
 with st.sidebar:
-    _selected = option_menu("Main Menu", [{', '.join(menu_entries)}])
+    _selected = option_menu("Main Menu", [{', '.join('"' + m + '"' for m in menu_entries)}])
 
     # making a button despite this comment
     # https://github.com/streamlit/streamlit/issues/468#issuecomment-807166632
@@ -334,7 +334,7 @@ with st.sidebar:
             f.write(f"""
 {outputs_st}
 
-if _selected == {k}:
+if _selected == \"{k}\":
     {inputs}
     _step_id = '{v["entry_point"]}'
     st.session_state['__current_step_id__'] = _step_id

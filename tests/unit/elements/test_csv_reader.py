@@ -53,7 +53,7 @@ def test_extract_all_csv_reader():
         "key": "csvreader",
         "kind": "CsvReader",
         "value": ["/path/to/file.csv"],
-        "label": "My CsvReader",
+        "label": "'''My CsvReader'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2",

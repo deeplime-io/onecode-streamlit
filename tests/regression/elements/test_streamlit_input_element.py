@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 import pytest
 from onecode import InputElement, Mode, Project
@@ -42,6 +42,11 @@ st.write('{self.value}', key={id})
             value: Any
         ) -> None:
             pass
+
+        def _json_form(self) -> Dict:
+            return {
+                "type": "string"
+            }
 
     return _MyInputElement
 

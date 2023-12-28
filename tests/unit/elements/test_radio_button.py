@@ -35,7 +35,7 @@ def test_extract_all_radio_button():
         "key": "radiobutton",
         "kind": "RadioButton",
         "value": ["A", "C"],
-        "label": "My RadioButton",
+        "label": "'''My RadioButton'''",
         "disabled": '_DATA_["x"]',
         "optional": True,
         "count": "2",
