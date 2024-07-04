@@ -37,6 +37,7 @@ def test_execute_text_output():
             "label": "TextOutput",
             "value": os.path.join(data_path, 'outputs', 'my_file.txt'),
             "tags": ["Core"],
+            "mimetype": "text/plain",
             "kind": "TextOutput",
             "truncate_at": 25000
         }

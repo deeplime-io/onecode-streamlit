@@ -36,6 +36,7 @@ def test_execute_file_output():
             "label": "FileOutput",
             "value": os.path.join(data_path, 'outputs', 'my_file.txt'),
             "tags": ["Core"],
+            "mimetype": "text/plain",
             "kind": "FileOutput"
         }
 

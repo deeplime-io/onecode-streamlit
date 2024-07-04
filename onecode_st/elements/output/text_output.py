@@ -6,7 +6,7 @@ import onecode
 from ..output_streamlit_element import OutputStreamlitElement
 
 
-class TextOutput(OutputStreamlitElement, onecode.TextOutput):
+class TextOutput(OutputStreamlitElement, onecode.FileOutput):
     @staticmethod
     def streamlit() -> str:
         """

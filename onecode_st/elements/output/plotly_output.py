@@ -8,7 +8,7 @@ import onecode
 from ..output_streamlit_element import OutputStreamlitElement
 
 
-class PlotlyOutput(OutputStreamlitElement, onecode.PlotlyOutput):
+class PlotlyOutput(OutputStreamlitElement, onecode.FileOutput):
     @staticmethod
     def imports() -> List[str]:
         """

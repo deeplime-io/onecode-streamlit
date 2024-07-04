@@ -157,7 +157,7 @@ with st.sidebar:
 
 
 
-def _CsvOutput(key=None, label=None, value=None, kind=None, tags=None, **kwargs):
+def _CsvOutput(key=None, label=None, value=None, kind=None, tags=None, make_path=None, **kwargs):
     
     value = os.path.relpath(value)  # allows compat with Windows
     if not os.path.exists(value) and not os.path.isfile(value):
@@ -436,7 +436,7 @@ if _selected == "Step3":
         '''my l\'slid 10''',
         min_value=1.0,
         max_value=6.0,
-        value=2.0,
+        value=2,
         step=1.0,
         disabled=False,
         key='my_l_slid_10'

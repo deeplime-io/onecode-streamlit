@@ -36,6 +36,7 @@ def test_execute_plotly_output():
             "label": "PlotlyOutput",
             "value": os.path.join(data_path, 'outputs', 'my_file.json'),
             "tags": ["JSON"],
+            "mimetype": "application/json",
             "kind": "PlotlyOutput"
         }
 

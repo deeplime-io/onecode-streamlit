@@ -8,7 +8,7 @@ import onecode
 from ..output_streamlit_element import OutputStreamlitElement
 
 
-class CsvOutput(OutputStreamlitElement, onecode.CsvOutput):
+class CsvOutput(OutputStreamlitElement, onecode.FileOutput):
     @staticmethod
     def imports() -> List[str]:
         """

@@ -24,7 +24,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.8, <3.13"
-onecode = { git = "https://github.com/deeplime-io/onecode.git", branch = "dev/1.x" }
+onecode = ">=1"
 pydash = ">=5.1.0,<8"
 python-slugify = ">=6.1.2,<9"
 strenum = ">=0.4.6,<1"
@@ -52,6 +52,7 @@ test = [
 
 [tool.poetry.scripts]
 onecode-streamlit = 'onecode_st.cli.start:main'
+onecode-build = 'onecode_st.cli.build:main'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

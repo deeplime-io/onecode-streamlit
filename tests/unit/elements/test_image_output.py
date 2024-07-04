@@ -36,6 +36,7 @@ def test_execute_image_output():
             "label": "ImageOutput",
             "value": os.path.join(data_path, 'outputs', 'my_file.jpg'),
             "tags": ["Image"],
+            "mimetype": "image/jpeg",
             "kind": "ImageOutput"
         }
 

@@ -1,14 +1,128 @@
 # SPDX-FileCopyrightText: 2023 DeepLime <contact@deeplime.io>
 # SPDX-License-Identifier: MIT
 
-from typing import List
+import os
+from typing import Any, List, Optional, Union
 
 import onecode
 
 from ..input_streamlit_element import InputStreamlitElement
 
 
-class FolderInput(InputStreamlitElement, onecode.FolderInput):
+class FolderInput(InputStreamlitElement, onecode.FileInput):
+    def __init__(
+        self,
+        key: str,
+        value: Optional[Union[str, List[str]]],
+        label: Optional[str] = None,
+        count: Optional[Union[int, str]] = None,
+        optional: Union[bool, str] = False,
+        hide_when_disabled: bool = False,
+        **kwargs: Any
+    ):
+        """
+        A single folder selector.
+
+        Args:
+            key: ID of the element. It must be unique as it is the key used to store data in
+                Project(), otherwise it will lead to conflicts at runtime in both execution and
+                Streamlit modes. The key will be transformed into snake case and slugified to avoid
+                any special character or whitespace. Note that an ID cannot start with `_`. Try to
+                choose a key that is meaningful for your context (see examples projects).
+            value: Path to folder. Provided folder doesn't necessarily have to exist for the
+                Streamlit mode, however its existence will be checked at execution time. If path
+                is not absolute, then it is considered relative to the data root folder. See
+                [Best Practices With Data][best-practices-with-data] for more information.
+            label: Label to display left of the folder selector.
+            count: Specify the number of occurence of the widget. OneCode typically uses it for the
+                streamlit case. Note that if `count` is defined, the expected `value` should always
+                be a list, even if the `count` is `1`. `count` can either be a fixed number
+                (e.g. `3`) or an expression dependent of other elements (see
+                [Using Expressions][using-runtime-expressions-in-elements] for more information).
+            optional: Specify whether the value may be None. `optional` can either be a fixed
+                boolean (`False` or `True`) or a conditional expression dependent of other elements
+                (see [Using Expressions][using-runtime-expressions-in-elements] for more
+                information).
+            hide_when_disabled: If element is optional, set it to True to hide it from the
+                interface, otherwise it will be shown disabled.
+            **kwargs: Extra user meta-data to attach to the element. Argument names cannot overwrite
+                existing attributes or methods name such as `streamlit`, `_value`, etc.
+
+        Raises:
+            ValueError: if the `key` is empty or starts with `_`.
+            AttributeError: if one the `kwargs` conflicts with an existing attribute or method.
+
+        !!! example
+            ```py
+            from onecode import folder_input, Mode, Project
+
+            Project().mode = Mode.EXECUTE
+            widget = folder_input(
+                key="FolderInput",
+                value="/path/to/"
+            )
+            print(widget)
+            ```
+
+            ```py title="Output"
+            "/path/to/"
+            ```
+
+        """
+        super().__init__(
+            key,
+            value,
+            label,
+            count,
+            optional,
+            hide_when_disabled,
+            **kwargs
+        )
+
+    @property
+    def _value_type(self) -> type:
+        """
+        Get the FolderInput value type: a single string `str`.
+
+        """
+        return str
+
+    @property
+    def value(self) -> Optional[str]:
+        """
+        Returns:
+            The path or list of paths for the selected folder: if paths are not absolute, then
+            they are considered relative to the data root folder. See
+            [Best Practices With Data][best-practices-with-data] for more information.
+
+        """
+        if self._value is not None:
+            if onecode.is_type(self._value, self._value_type):
+                return onecode.Project().get_input_path(self._value)
+
+            elif type(self._value) is list and all(
+                onecode.is_type(v, self._value_type) for v in self._value
+            ):
+                return [
+                    onecode.Project().get_input_path(val) for val in self._value
+                ]
+
+        return None
+
+    def _validate(
+        self,
+        value: str
+    ) -> None:
+        """
+        Raises:
+            FileNotFoundError: if the path does not exist or is not a folder.
+
+        """
+        if not os.path.exists(value):
+            raise FileNotFoundError(f"[{self.key}] Folder not found: {value}")
+        if not os.path.isdir(value):
+            raise NotADirectoryError(f"[{self.key}] Path is not a folder: {value}")
+
     @staticmethod
     def imports() -> List[str]:
         """

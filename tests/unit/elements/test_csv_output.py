@@ -36,6 +36,7 @@ def test_execute_csv_output():
             "label": "CsvOutput",
             "value": os.path.join(data_path, 'outputs', 'my_file.csv'),
             "tags": ["CSV"],
+            "mimetype": "text/csv",
             "kind": "CsvOutput"
         }
 
